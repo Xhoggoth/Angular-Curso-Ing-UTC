@@ -5,9 +5,59 @@
   <title>AngularCursoIngUTC</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Main Css -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Icon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Background JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+  <script src="script.js"></script>
+
 </head>
 <body>
-  <app-root></app-root>
+  <div class="content">
+    <h1 class="text-pop-up-top">Christian Michel Saucedo Jiménez</h1>
+</div>
 </body>
 </html>
+
+<script>
+  let particles = [];
+const num = 1000;
+const noiseScale = 0.01/2;
+
+function setup() {
+  // createCanvas(1360, 643);
+  createCanvas(1536, 739);
+  for(let i = 0; i < num; i ++) {
+    particles.push(createVector(random(width), random(height)));
+  }
+  stroke(255);
+  clear();
+}
+
+function draw() {
+  background(0, 10);
+  for(let i = 0; i < num; i ++) {
+    let p = particles[i];
+    point(p.x, p.y);
+    let n = noise(p.x * noiseScale, p.y * noiseScale, frameCount * noiseScale * noiseScale);
+    let a = TAU * n;
+    p.x += cos(a);
+    p.y += sin(a);
+    if(!onScreen(p)) {
+      p.x = random(width);
+      p.y = random(height);
+    }
+  }
+}
+
+function mouseReleased() {
+  noiseSeed(millis());
+}
+
+function onScreen(v) {
+  return v.x >= 0 && v.x <= width && v.y >= 0 && v.y <= height;
+}
+</script>
